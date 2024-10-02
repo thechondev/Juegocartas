@@ -41,10 +41,11 @@ namespace Juegocartas
         {
             string mensaje = "No se encontraron grupos";
             int[] contadores = new int[Enum.GetValues(typeof(Nombrec)).Length];
-            int[] esctrebol = new int[TOTAL_CARTAS];
-            int[] escpica = new int[TOTAL_CARTAS];
-            int[] esccorazon = new int[TOTAL_CARTAS];
-            int[] escdiamante = new int[TOTAL_CARTAS];
+            List<int> puntaje = new List<int>();
+            List<int>esctrebol = new List<int>();
+            List<int>escpica = new List<int>();
+            List<int>esccorazon = new List<int>();
+            List<int>escdiamante = new List<int>();
 
             int n = 0;
             foreach (Carta carta in cartas)
@@ -55,26 +56,25 @@ namespace Juegocartas
                 switch (pintac)
                 {
                     case "TREBOL":
-                        esctrebol[n] = (int)carta.obtenernom();
+                        esctrebol.Add((int)carta.obtenernom());
                         break;
                     case "PICA":
-                        escpica[n] = (int)carta.obtenernom();
+                        escpica.Add((int)carta.obtenernom());
                         break;
                     case "CORAZON":
-                        esccorazon[n] = (int)carta.obtenernom();
+                        esccorazon.Add((int)carta.obtenernom());
                         break;
                     default:
-                        escdiamante[n] = (int)(carta.obtenernom());
+                        escdiamante.Add((int)(carta.obtenernom()));
                         break;
                 }
                                                                                         
                 n++;
             }
-
-            Array.Sort(esctrebol);
-            Array.Sort(escpica);
-            Array.Sort(esccorazon);
-            Array.Sort(escdiamante);
+            esctrebol.Sort();
+            escpica.Sort();
+            esccorazon.Sort();
+            escdiamante.Sort();
             
 
             int m = 1;
@@ -107,10 +107,33 @@ namespace Juegocartas
             if (esctrebol.Sum() != 0)
             {
                 
-                for (int i = 0; i < esctrebol.Length; i++)
+                for (int i = 0; i < esctrebol.Count; i++)
                 {
-                    if (i  == esctrebol.Length-1)
+                    if (i == esctrebol.Count - 1)
                     {
+                        if (esctrebol.Count == 1 && contadores[esctrebol[i]] == 1)
+                        {
+                            if(esctrebol[i] == 10 || esctrebol[i] == 11 || esctrebol[i] == 12)
+                            {
+                                puntaje.Add(10);
+                            }
+                            else
+                            {
+                                puntaje.Add(esctrebol[i] + 1);
+                            }
+                        }
+                        else if (contadores[esctrebol[i]] == 1 && !(esctrebol[i - 1] + 1 == esctrebol[i]))
+                        {
+                            if (esctrebol[i] == 10 || esctrebol[i] == 11 || esctrebol[i] == 12)
+                            {
+                                puntaje.Add(10);
+                            }
+                            else
+                            {
+                                puntaje.Add(esctrebol[i] + 1);
+                            }
+                            
+                        }
                         break;
                     }
                     if ((esctrebol[i]!= 0) && (esctrebol[i]+1 == esctrebol[i+1]) || (esctrebol[i]==0 && esctrebol[i+1]==1))
@@ -122,6 +145,18 @@ namespace Juegocartas
                             haygrupos = true;
                         }
                     }
+                    else if (contadores[esctrebol[i]] == 1 && !(esctrebol[i - 1] + 1 == esctrebol[i]))
+                    {
+                        if (esctrebol[i] == 10 || esctrebol[i] == 11 || esctrebol[i] == 12)
+                        {
+                            puntaje.Add(10);
+                        }
+                        else
+                        {
+                            puntaje.Add(esctrebol[i]+1);
+                        }
+                    }
+                    
 
                 }
                 if (grupoesc != 0)
@@ -141,10 +176,33 @@ namespace Juegocartas
             if (escpica.Sum() != 0)
             {
 
-                for (int i = 0; i < escpica.Length; i++)
+                for (int i = 0; i < escpica.Count; i++)
                 {
-                    if (i == escpica.Length - 1)
+                    if (escpica.Count == 1 && contadores[escpica[i]] == 1)
                     {
+                        if (escpica[i] == 10 || escpica[i] == 11 || escpica[i] == 12)
+                        {
+                            puntaje.Add(10);
+                        }
+                        else
+                        {
+                            puntaje.Add(escpica[i] + 1);
+                        }
+                    }
+                    else if (i == escpica.Count - 1)
+                    {
+                        if (contadores[escpica[i]] == 1 && !(escpica[i - 1] + 1 == escpica[i]))
+                        {
+                            if (escpica[i] == 10 || escpica[i] == 11 || escpica[i] == 12)
+                            {
+                                puntaje.Add(10);
+                            }
+                            else
+                            {
+                                puntaje.Add(escpica[i] + 1);
+                            }
+                            
+                        }
                         break;
                     }
                     if ((escpica[i] != 0) && (escpica[i] + 1 == escpica[i + 1]) || (escpica[i] == 0 && escpica[i + 1] == 1))
@@ -154,6 +212,17 @@ namespace Juegocartas
                         {
                             mensaje = "Se encontraron los siguientes grupos:\n";
                             haygrupos = true;
+                        }
+                    }
+                    else if (contadores[escpica[i]] == 1 && !(escpica[i - 1] + 1 == escpica[i]))
+                    {
+                        if (escpica[i] == 10 || escpica[i] == 11 || escpica[i] == 12)
+                        {
+                            puntaje.Add(10);
+                        }
+                        else
+                        {
+                            puntaje.Add(escpica[i]+1);
                         }
                     }
 
@@ -172,14 +241,38 @@ namespace Juegocartas
                 }
             }
 
+            //escaleras de corazon
             if (esccorazon.Sum() != 0)
             {
 
-                for (int i = 0; i < esccorazon.Length; i++)
+                for (int i = 0; i < esccorazon.Count; i++)
                 {
-                    if (i == esccorazon.Length - 1)
+                    if (esccorazon.Count == 1 && contadores[esccorazon[i]] == 1)
                     {
+                        if (esccorazon[i] == 10 || esccorazon[i] == 11 || esccorazon[i] == 12)
+                        {
+                            puntaje.Add(10);
+                        }
+                        else
+                        {
+                            puntaje.Add(esccorazon[i] + 1);
+                        }
+                    }
+                    else if (i == esccorazon.Count - 1)
+                    {
+                        if (contadores[esccorazon[i]] == 1 && !(esccorazon[i - 1] + 1 == esccorazon[i]))
+                        {
+                            if (esccorazon[i] == 10 || esccorazon[i] == 11 || esccorazon[i] == 12)
+                            {
+                                puntaje.Add(10);
+                            }
+                            else
+                            {
+                                puntaje.Add(esccorazon[i] + 1);
+                            }
+                        }
                         break;
+
                     }
                     if ((esccorazon[i] != 0) && (esccorazon[i] + 1 == esccorazon[i + 1]) || (esccorazon[i] == 0 && esccorazon[i + 1] == 1))
                     {
@@ -188,6 +281,17 @@ namespace Juegocartas
                         {
                             mensaje = "Se encontraron los siguientes grupos:\n";
                             haygrupos = true;
+                        }
+                    }
+                    else if (contadores[esccorazon[i]] == 1 && !(esccorazon[i - 1] + 1 == esccorazon[i]))
+                    {
+                        if (esccorazon[i] == 10 || esccorazon[i] == 11 || esccorazon[i] == 12)
+                        {
+                            puntaje.Add(10);
+                        }
+                        else
+                        {
+                            puntaje.Add(esccorazon[i]+1);
                         }
                     }
 
@@ -209,10 +313,33 @@ namespace Juegocartas
             if (escdiamante.Sum() != 0)
             {
 
-                for (int i = 0; i < escdiamante.Length; i++)
+                for (int i = 0; i < escdiamante.Count; i++)
                 {
-                    if (i == escdiamante.Length - 1)
+                    if (escdiamante.Count == 1 && contadores[escdiamante[i]] == 1)
                     {
+                        if (escdiamante[i] == 10 || escdiamante[i] == 11 || escdiamante[i] == 12)
+                        {
+                            puntaje.Add(10);
+                        }
+                        else
+                        {
+                            puntaje.Add(escdiamante[i] + 1);
+                        }
+                    }
+                    else if (i == escdiamante.Count - 1)
+                    {
+                        if (contadores[escdiamante[i]] == 1 && !(escdiamante[i - 1] + 1 == escdiamante[i]))
+                        { 
+                            if (escdiamante[i] == 10 || escdiamante[i] == 11 || escdiamante[i] == 12)
+                            {
+                                puntaje.Add(10);
+
+                            }
+                            else
+                            {
+                                puntaje.Add(escdiamante[i] + 1);
+                            }
+                        }
                         break;
                     }
                     if ((escdiamante[i] != 0) && (escdiamante[i] + 1 == escdiamante[i + 1]) || (escdiamante[i] == 0 && escdiamante[i + 1] == 1))
@@ -222,6 +349,18 @@ namespace Juegocartas
                         {
                             mensaje = "Se encontraron los siguientes grupos:\n";
                             haygrupos = true;
+                        }
+                    }
+                    else if (contadores[escdiamante[i]] == 1 && !(escdiamante[i - 1] + 1 == escdiamante[i]))
+                    {
+                        if (escdiamante[i] == 10 || escdiamante[i] == 11 || escdiamante[i] == 12)
+                        {
+                            puntaje.Add(10);
+                            
+                        }
+                        else
+                        {
+                            puntaje.Add(escdiamante[i]+1);
                         }
                     }
 
@@ -239,6 +378,7 @@ namespace Juegocartas
                     grupoesc = 0;
                 }
             }
+            mensaje += "el puntaje es " + (puntaje.Sum()).ToString();
             return mensaje;
         }
     }
