@@ -75,8 +75,8 @@ namespace Juegocartas
             escpica.Sort();
             esccorazon.Sort();
             escdiamante.Sort();
-            
 
+            bool punteador = true;
             int m = 1;
             int grupoesc = 0;
             bool haygrupos = false;
@@ -136,27 +136,53 @@ namespace Juegocartas
                         }
                         break;
                     }
-                    if ((esctrebol[i]!= 0) && (esctrebol[i]+1 == esctrebol[i+1]) || (esctrebol[i]==0 && esctrebol[i+1]==1))
+                    try
                     {
-                        grupoesc += 1;
-                        if (!haygrupos)
+                        if ((esctrebol[i] + 1 == esctrebol[i + 1]) || (esctrebol[i] == 0 && esctrebol[i + 1] == 1))
                         {
-                            mensaje = "Se encontraron los siguientes grupos:\n";
-                            haygrupos = true;
+                            grupoesc += 1;
+                            if (!haygrupos)
+                            {
+                                mensaje = "Se encontraron los siguientes grupos:\n";
+                                haygrupos = true;
+                            }
+                            punteador = false;
                         }
                     }
-                    else if (contadores[esctrebol[i]] == 1 && !(esctrebol[i - 1] + 1 == esctrebol[i]))
+                    catch (Exception)
                     {
-                        if (esctrebol[i] == 10 || esctrebol[i] == 11 || esctrebol[i] == 12)
+                        punteador = false;
+                        break;
+                    }
+                    try
+                    {
+                        if (contadores[esctrebol[i]] == 1 && !(esctrebol[i - 1] + 1 == esctrebol[i]) && punteador == true)
                         {
-                            puntaje.Add(10);
-                        }
-                        else
-                        {
-                            puntaje.Add(esctrebol[i]+1);
+                            if (esctrebol[i] == 10 || esctrebol[i] == 11 || esctrebol[i] == 12)
+                            {
+                                puntaje.Add(10);
+                            }
+                            else
+                            {
+                                puntaje.Add(esctrebol[i] + 1);
+                            }
                         }
                     }
-                    
+                    catch (Exception)
+                    {
+                        if (contadores[esctrebol[i]] == 1 && punteador == true)
+                        {
+                            if (esctrebol[i] == 10 || esctrebol[i] == 11 || esctrebol[i] == 12)
+                            {
+                                puntaje.Add(10);
+                            }
+                            else
+                            {
+                                puntaje.Add(esctrebol[i] + 1);
+                            }
+                        }
+                    }
+                    punteador = true;
 
                 }
                 if (grupoesc != 0)
@@ -173,6 +199,7 @@ namespace Juegocartas
                 }
             }
            
+            //escalera de pica
             if (escpica.Sum() != 0)
             {
 
@@ -205,27 +232,54 @@ namespace Juegocartas
                         }
                         break;
                     }
-                    if ((escpica[i] != 0) && (escpica[i] + 1 == escpica[i + 1]) || (escpica[i] == 0 && escpica[i + 1] == 1))
+                    try 
                     {
-                        grupoesc += 1;
-                        if (!haygrupos)
+                        if ((escpica[i] + 1 == escpica[i + 1]) || (escpica[i] == 0 && escpica[i + 1] == 1))
                         {
-                            mensaje = "Se encontraron los siguientes grupos:\n";
-                            haygrupos = true;
-                        }
-                    }
-                    else if (contadores[escpica[i]] == 1 && !(escpica[i - 1] + 1 == escpica[i]))
-                    {
-                        if (escpica[i] == 10 || escpica[i] == 11 || escpica[i] == 12)
-                        {
-                            puntaje.Add(10);
-                        }
-                        else
-                        {
-                            puntaje.Add(escpica[i]+1);
-                        }
-                    }
+                            grupoesc += 1;
+                            if (!haygrupos)
+                            {
+                                mensaje = "Se encontraron los siguientes grupos:\n";
+                                haygrupos = true;
+                            }
+                            punteador = false;
 
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        punteador = false;
+                        break;
+                    }
+                    try
+                    {
+                        if (contadores[escpica[i]] == 1 && !(escpica[i - 1] + 1 == escpica[i]) && punteador == true)
+                        {
+                            if (escpica[i] == 10 || escpica[i] == 11 || escpica[i] == 12)
+                            {
+                                puntaje.Add(10);
+                            }
+                            else
+                            {
+                                puntaje.Add(escpica[i] + 1);
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        if (contadores[escpica[i]] == 1 && punteador == true)
+                        {
+                            if (escpica[i] == 10 || escpica[i] == 11 || escpica[i] == 12)
+                            {
+                                puntaje.Add(10);
+                            }
+                            else
+                            {
+                                puntaje.Add(escpica[i] + 1);
+                            }
+                        }
+                    }
+                    punteador = true;
                 }
                 if (grupoesc != 0)
                 {
@@ -274,26 +328,55 @@ namespace Juegocartas
                         break;
 
                     }
-                    if ((esccorazon[i] != 0) && (esccorazon[i] + 1 == esccorazon[i + 1]) || (esccorazon[i] == 0 && esccorazon[i + 1] == 1))
+                    try
                     {
-                        grupoesc += 1;
-                        if (!haygrupos)
+                        if ((esccorazon[i] + 1 == esccorazon[i + 1]) || (esccorazon[i] == 0 && esccorazon[i + 1] == 1))
                         {
-                            mensaje = "Se encontraron los siguientes grupos:\n";
-                            haygrupos = true;
+                            grupoesc += 1;
+                            if (!haygrupos)
+                            {
+                                mensaje = "Se encontraron los siguientes grupos:\n";
+                                haygrupos = true;
+                            }
+                            punteador = false;
+
                         }
                     }
-                    else if (contadores[esccorazon[i]] == 1 && !(esccorazon[i - 1] + 1 == esccorazon[i]))
+                    catch (Exception)
                     {
-                        if (esccorazon[i] == 10 || esccorazon[i] == 11 || esccorazon[i] == 12)
+                        punteador = false;
+                        break;
+                    }
+                    
+                    try
+                    {
+                        if (contadores[esccorazon[i]] == 1 && !(esccorazon[i - 1] + 1 == esccorazon[i]) && punteador == true)
                         {
-                            puntaje.Add(10);
-                        }
-                        else
-                        {
-                            puntaje.Add(esccorazon[i]+1);
+                            if (esccorazon[i] == 10 || esccorazon[i] == 11 || esccorazon[i] == 12)
+                            {
+                                puntaje.Add(10);
+                            }
+                            else
+                            {
+                                puntaje.Add(esccorazon[i] + 1);
+                            }
                         }
                     }
+                    catch (Exception) 
+                    {
+                        if (contadores[esccorazon[i]] == 1 && punteador == true) 
+                        {
+                            if (esccorazon[i] == 10 || esccorazon[i] == 11 || esccorazon[i] == 12)
+                            {
+                                puntaje.Add(10);
+                            }
+                            else
+                            {
+                                puntaje.Add(esccorazon[i] + 1);
+                            }
+                        }
+                    }
+                    punteador = true;
 
                 }
                 if (grupoesc != 0)
@@ -310,6 +393,7 @@ namespace Juegocartas
                 }
             }
 
+            //escalera diamante
             if (escdiamante.Sum() != 0)
             {
 
@@ -342,28 +426,56 @@ namespace Juegocartas
                         }
                         break;
                     }
-                    if ((escdiamante[i] != 0) && (escdiamante[i] + 1 == escdiamante[i + 1]) || (escdiamante[i] == 0 && escdiamante[i + 1] == 1))
+                    try 
                     {
-                        grupoesc += 1;
-                        if (!haygrupos)
+                        if ((escdiamante[i] != 0) && (escdiamante[i] + 1 == escdiamante[i + 1]) || (escdiamante[i] == 0 && escdiamante[i + 1] == 1))
                         {
-                            mensaje = "Se encontraron los siguientes grupos:\n";
-                            haygrupos = true;
-                        }
-                    }
-                    else if (contadores[escdiamante[i]] == 1 && !(escdiamante[i - 1] + 1 == escdiamante[i]))
-                    {
-                        if (escdiamante[i] == 10 || escdiamante[i] == 11 || escdiamante[i] == 12)
-                        {
-                            puntaje.Add(10);
-                            
-                        }
-                        else
-                        {
-                            puntaje.Add(escdiamante[i]+1);
-                        }
-                    }
+                            grupoesc += 1;
+                            if (!haygrupos)
+                            {
+                                mensaje = "Se encontraron los siguientes grupos:\n";
+                                haygrupos = true;
+                            }
+                            punteador = false;
 
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        punteador = false;
+                        break;
+                    }
+                    
+                    try 
+                    {
+                        if (contadores[escdiamante[i]] == 1 && !(escdiamante[i - 1] + 1 == escdiamante[i]) && punteador == true)
+                        {
+                            if (escdiamante[i] == 10 || escdiamante[i] == 11 || escdiamante[i] == 12)
+                            {
+                                puntaje.Add(10);
+
+                            }
+                            else
+                            {
+                                puntaje.Add(escdiamante[i] + 1);
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        if (contadores[escdiamante[i]] == 1 && punteador == true)
+                        {
+                            if (escdiamante[i] == 10 || escdiamante[i] == 11 || escdiamante[i] == 12)
+                            {
+                                puntaje.Add(10);
+                            }
+                            else
+                            {
+                                puntaje.Add(escdiamante[i] + 1);
+                            }
+                        }
+                    }
+                    punteador = true;
                 }
                 if (grupoesc != 0)
                 {
